@@ -66,10 +66,10 @@ def graficar_top_kills(df):
     # Rotamos etiquetas y ajustamos márgenes para que quede prolijo
     plt.xticks(rotation=45)
     plt.tight_layout()
-
+    print(promedio_kills.round(2).to_string())
     # 4. Abrimos la ventana
     plt.show()
-    print(promedio_kills.round(2).to_string())
+
 
 # --- OPCIÓN 5 ---
 def mostrar_top_kda(df):
