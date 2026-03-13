@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def cargar_y_limpiar_datos():
     """Carga el Excel y prepara las columnas matemáticas."""
@@ -39,13 +40,36 @@ def mostrar_winrate_campeon(df):
 def graficar_campeones_jugados(df):
     print("\n--- Campeones más jugados ---")
     print(df['campeon'].value_counts().head(5).to_string())
-    print("\n[!] En construcción: Falta integrar Matplotlib para el gráfico de barras.")
-    # Acá irá el df['campeon'].value_counts()
+    campeones = df['campeon'].value_counts()
+    campeones.plot(kind='bar', color='salmon', edgecolor='black')
+    plt.title('Campeones mas jugados', fontsize=14)
+    plt.xlabel('Campeón', fontsize=12)
+    plt.ylabel('cantidad', fontsize=12)
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
 def graficar_top_kills(df):
-    print("\n--- kills por campeon ---")
-    print(df.groupby('campeon')['kills'].mean().round(2).to_string())
-    print("\n[!] En construcción: Falta integrar Matplotlib para el gráfico de kills.")
+    print("\nGenerando gráfico de Kills... revisá la barra de tareas de Windows.")
+
+    # 1. Agrupamos por campeón, sacamos promedio de kills y ORDENAMOS de mayor a menor
+    promedio_kills = df.groupby('campeon')['kills'].mean().sort_values(ascending=False)
+
+    # 2. Le decimos a Pandas que prepare el gráfico de barras (color salmón para diferenciarlo)
+    promedio_kills.plot(kind='bar', color='salmon', edgecolor='black')
+
+    # 3. Configuramos la estética
+    plt.title('Promedio de Kills por Campeón', fontsize=14)
+    plt.xlabel('Campeón', fontsize=12)
+    plt.ylabel('Kills Promedio', fontsize=12)
+
+    # Rotamos etiquetas y ajustamos márgenes para que quede prolijo
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # 4. Abrimos la ventana
+    plt.show()
+    print(promedio_kills.round(2).to_string())
 
 # --- OPCIÓN 5 ---
 def mostrar_top_kda(df):
@@ -55,7 +79,22 @@ def mostrar_top_kda(df):
 
 # --- OPCIÓN 6 (Bonus) ---
 def mostrar_correlacion(df):
-    print("\n[!] En construcción: Analizador matemático de variables.")
+    print("\n--- Analizador de Impacto en la Victoria ---")
+    print("¿Qué factor define realmente tus partidas?")
 
+    # 1. Calculamos la correlación solo de las columnas numéricas
+    matriz = df.corr(numeric_only=True)
+
+    # 2. Recortamos solo la columna 'victoria'
+    impacto_victoria = matriz['victoria']
+
+    # 3. Ordenamos de mayor a menor para hacer un "Ranking de Impacto"
+    ranking = impacto_victoria.sort_values(ascending=False).round(3)
+
+    # 4. Imprimimos limpio
+    print("\n", ranking.to_string())
+
+    correlacion_farmeo_kills = df['kills'].corr(df['cs'])
+    print("\nLa correlacion del fameo y la cantidad de kills es de: ", correlacion_farmeo_kills.round(2))
 
 
