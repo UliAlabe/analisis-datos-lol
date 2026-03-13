@@ -1,4 +1,6 @@
-from analisis import *
+from analisis import (cargar_y_limpiar_datos, mostrar_promedio_cs,
+                      mostrar_winrate_campeon, graficar_campeones_jugados,
+                      graficar_top_kills, mostrar_top_kda, mostrar_correlacion)
 
 
 def iniciar_programa():
